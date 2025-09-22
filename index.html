@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Clinic Apps — Entry</title>
+  <meta name="theme-color" content="#17B26A"/>
+  <link rel="icon" href="./dr.charan/public/assets/icon-192.png" />
+  <style>
+    :root{
+      --bg:#0b0f12;--fg:#f1f5f9;--muted:#94a3b8;--card:#11161a;--ring:#1f2937;
+      --accent:#17B26A;--accent-2:#14a167;--radius:18px;--shadow:0 8px 24px rgba(0,0,0,.35);
+    }
+    @media (prefers-color-scheme: light){
+      :root{--bg:#f8fafc;--fg:#0b1220;--muted:#475569;--card:#ffffff;--ring:#e2e8f0;--shadow:0 10px 24px rgba(2,6,23,.06)}
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"}
+    .wrap{max-width:980px;margin:0 auto;padding:22px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#79f2b3);
+      box-shadow:var(--shadow);
+    }
+    h1{font-size:1.35rem;margin:0}
+    .tag{font-size:.85rem;color:var(--muted)}
+    .hero{
+      background:linear-gradient(180deg, rgba(23,178,106,.12), transparent 70%);
+      border:1px solid var(--ring);border-radius:var(--radius);padding:18px;margin:10px 0 20px 0;
+    }
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    @media(max-width:860px){.grid{grid-template-columns:1fr}}
+    .card{
+      background:var(--card);border:1px solid var(--ring);border-radius:22px;padding:16px;box-shadow:var(--shadow);
+      display:flex;flex-direction:column;gap:12px;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .card:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(0,0,0,.35);border-color:#2b3645}
+    .card h3{margin:0;font-size:1.1rem}
+    .card p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.35}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      background:var(--accent);color:white;text-decoration:none;padding:10px 14px;border-radius:14px;
+      font-weight:600;border:0;cursor:pointer;box-shadow:0 8px 20px rgba(23,178,106,.25);
+    }
+    .btn:active{transform:translateY(1px)}
+    footer{margin:26px 0 10px 0;color:var(--muted);font-size:.9rem;text-align:center}
+    .sub{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{border:1px solid var(--ring);border-radius:999px;padding:6px 10px;font-size:.85rem;color:var(--muted)}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Clinic Apps Hub</h1>
+          <div class="tag">Choose an app to enter</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="row">
+        <div>
+          <strong>Two PWAs, one domain.</strong>
+          <div class="sub">
+            <span class="pill">Installable PWA</span>
+            <span class="pill">Offline-first</span>
+            <span class="pill">Mobile, Tablet, Desktop</span>
+          </div>
+        </div>
+        <a class="btn" href="./dr.charan/" aria-label="Open Dr. Charan app">Quick Launch</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="row" style="gap:12px">
+          <h3>Dr. Charan — Child Clinic</h3>
+          <span class="pill">v1</span>
+        </div>
+        <p>Tap to open the child clinic PWA (analytics, bookings, pharmacy, patients, staff, and more).</p>
+        <div class="row">
+          <a class="btn" href="./dr.charan/">Enter App</a>
+          <a class="pill" href="./dr.charan/index.html">Open index.html</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="row" style="gap:12px">
+          <h3>Dr. Vijaya — Fetal Medicine</h3>
+          <span class="pill">v1</span>
+        </div>
+        <p>Tap to open the fetal medicine PWA (obstetric ultrasound, fetal diagnosis &amp; therapy, genetic counselling).</p>
+        <div class="row">
+          <a class="btn" href="./dr.vijaya/">Enter App</a>
+          <a class="pill" href="./dr.vijaya/index.html">Open index.html</a>
+        </div>
+      </article>
+    </section>
+
+    <footer>Powered by Onestop AI Services. All rights reserved.</footer>
+  </div>
+</body>
+</html>

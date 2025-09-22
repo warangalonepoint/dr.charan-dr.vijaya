@@ -1,0 +1,11 @@
+window.Reports=(()=>{
+  function buildDetailedAnomalyReport(booking,scan){
+    const p=booking.patient||{}; const now=new Date().toLocaleString();
+    const rows=Object.entries(scan.biometry||{}).map(([k,v])=>`<tr><td>${k}</td><td>${v??''}</td></tr>`).join('');
+    const dops=Object.entries(scan.dopplers||{}).map(([k,v])=>`<tr><td>${k}</td><td>${v??''}</td></tr>`).join('');
+    return `<!doctype html><html><head><meta charset="utf-8"><title>Detailed Anomaly Report</title><style>@page{size:A4;margin:16mm}body{font:14px/1.4 system-ui;color:#111}h1,h2,h3{margin:0 0 8px}.hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ccc;padding-bottom:8px;margin-bottom:8px}.badge{background:#17B26A22;padding:6px 10px;border-radius:999px;border:1px solid #17B26A;color:#065f46;font-weight:700}table{width:100%;border-collapse:collapse;margin:8px 0}td,th{border:1px solid #ddd;padding:6px}footer{margin-top:12px;font-size:12px;color:#444}${watermarkCss()}</style></head><body><div class="hdr"><div><h1>Dr. Vijaya’s Fetal Medicine Centre</h1><div>Detailed Anomaly Scan Report</div></div><div class="badge">Sex not disclosed</div></div><h3>Patient</h3><table><tr><td>Name</td><td>${p.name||''}</td></tr><tr><td>Phone</td><td>${p.phone||''}</td></tr><tr><td>Scan Type</td><td>${scan.type||''}</td></tr><tr><td>Date/Time</td><td>${booking.date||''} ${booking.time||''}</td></tr></table><h3>Biometry</h3><table>${rows||''}</table><h3>Dopplers</h3><table>${dops||''}</table><h3>Checklist</h3><p>Planes: ${(scan.checklist?.requiredPlanes||[]).join(', ')}</p><p>Notes: ${scan.checklist?.notes||''}</p><footer><div>RMP: ${window.Auth.current()?.rmpRegNo||'—'} • Generated: ${now}</div><div>“Sex not disclosed” as per PCPNDT.</div></footer></body></html>`;
+  }
+  async function htmlToPdfBlob(html){const w=window.open('','_blank','noopener');w.document.open();w.document.write(html);w.document.close();setTimeout(()=>{try{w.focus();w.print();}catch(e){}},300);return new Blob([html],{type:'text/html'});}
+  function previewHtml(html){const w=window.open('','_blank','noopener');w.document.open();w.document.write(html);w.document.close();}
+  return {buildDetailedAnomalyReport,htmlToPdfBlob,previewHtml};
+})();

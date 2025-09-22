@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Genetic Counseling</title>
+<link rel="stylesheet" href="styles/styles.css">
+<script defer src="scripts/utils.js"></script>
+<script defer src="scripts/db.js"></script>
+<script defer src="scripts/models.js"></script>
+<script defer src="scripts/counseling.js"></script>
+<script defer src="scripts/telemed.js"></script>
+</head>
+<body><body class="bg-yellow">
+
+<header class="topbar">
+  <div class="brand-inline"><img src="assets/logo.png" class="logo-sm"><strong>Genetic Counseling</strong></div>
+  <div class="topbar-actions">
+    <input id="search" class="input sm" placeholder="Search case/patient" onkeydown="if(event.key==='Enter')window.Counsel.search(this.value)">
+    <span id="roleBadge" class="badge"></span>
+    <button id="themeToggle" class="btn ghost">🌓</button>
+    <a class="btn ghost" href="dashboard.html">Home</a>
+  </div>
+</header>
+<main class="grid cols">
+  <section class="card">
+  <h3>Counseling Notes</h3>
+  <div id="counselingList" class="list"></div>
+  <div id="counselingEmpty" class="empty">
+    <img src="assets/illus/counseling.png" alt="Genetic counseling illustration" width="200">
+    <p>No counseling sessions recorded yet.</p>
+  </div>
+</section>
+
+    <h3>Case</h3>
+    <label>Patient ID</label><input id="patientId" class="input">
+    <label>Reason</label><input id="reason" class="input" placeholder="High risk screening / anomaly / family history ...">
+    <label>Pedigree (JSON)</label><textarea id="pedigree" class="input" rows="4" placeholder='{"proband":"F","relatives":[...]}'></textarea>
+    <h4>Options Discussed</h4>
+    <div class="chips">
+      <label><input type="checkbox" value="Combined"> Combined (NT+biochem)</label>
+      <label><input type="checkbox" value="Quad"> Quad</label>
+      <label><input type="checkbox" value="NIPT"> NIPT</label>
+      <label><input type="checkbox" value="CVS"> CVS</label>
+      <label><input type="checkbox" value="Amnio"> Amnio</label>
+    </div>
+    <label>Decision</label>
+    <select id="decision" class="input"><option>Decided: NIPT</option><option>Decided: Diagnostic</option><option>Declined</option><option>Undecided</option></select>
+    <h4>Tele-session</h4>
+    <div class="row-inline"><select id="teleMode" class="input"><option>Video</option><option>Audio</option><option>Text</option></select><button class="btn" onclick="window.Telemed.launch()">Launch (placeholder)</button></div>
+    <label>Log note</label><textarea id="logNote" class="input" rows="2"></textarea>
+    <button class="btn" onclick="window.Counsel.addLog()">Add Log</button>
+    <div class="row-inline mt-2"><button class="btn primary" onclick="window.Counsel.save()">Save Counseling Note</button><button class="btn ghost" onclick="window.Counsel.clearForm()">Clear</button></div>
+  </section>
+  <section class="card">
+    <h3>Follow-up Board</h3><div id="board" class="list"></div>
+  </section>
+</main>
+<footer class="footer"><span>Acceptance: “Decided: NIPT” appears on board.</span><span class="version">v0.2.0</span></footer>
+<script>guardSessionOrRedirect(); setupThemeToggle(); showRoleBadge(); window.addEventListener('DOMContentLoaded', async () => { await window.DB.ensureReady(); window.Counsel.refreshBoard(); });</script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+</body></html>

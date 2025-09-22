@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin</title>
+<link rel="stylesheet" href="styles/styles.css">
+<script defer src="scripts/utils.js"></script>
+<script defer src="scripts/db.js"></script>
+<script defer src="scripts/models.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand-inline"><img src="assets/logo.png" class="logo-sm"><strong>Admin</strong></div>
+  <div class="topbar-actions">
+    <span id="roleBadge" class="badge"></span>
+    <button id="themeToggle" class="btn ghost">🌓</button>
+    <a class="btn ghost" href="dashboard.html">Home</a>
+  </div>
+</header>
+<main class="grid cols">
+  <section class="card">
+    <h3>Users & Roles</h3>
+    <div class="grid two">
+      <label>Name<input id="uname" class="input"></label>
+      <label>Role<select id="urole" class="input"><option>doctor</option><option>counselor</option><option>frontoffice</option><option>admin</option></select></label>
+      <label>RMP Reg # (if doctor)<input id="rmp" class="input"></label>
+      <label>PIN<input id="upin" class="input" inputmode="numeric" maxlength="6"></label>
+    </div>
+    <button class="btn primary" onclick="saveUser()">Add/Update</button>
+    <div id="users" class="list mt-2"></div>
+  </section>
+  <section class="card">
+    <h3>Templates</h3>
+    <label>Report phrases (JSON)</label>
+    <textarea id="tmpl" class="input" rows="6" placeholder='{"anomaly":"No gross anomalies noted"}'></textarea>
+    <button class="btn" onclick="saveTemplates()">Save templates</button>
+  </section>
+  <section class="card">
+    <h3>Backups</h3>
+    <div class="row-inline"><button class="btn" onclick="exportDb()">Export</button><input type="file" id="importFile" class="input"><button class="btn" onclick="importDb()">Import</button></div>
+  </section>
+</main>
+<footer class="footer"><span>Admin only.</span><span class="version">v0.2.0</span></footer>
+<script>
+guardSessionOrRedirect(['admin']); setupThemeToggle(); showRoleBadge();
+window.addEventListener('DOMContentLoaded', async ()=>{ await window.DB.ensureReady(); renderUsers(); });
+async function saveUser(){ const u={name:uname.value.trim(),role:urole.value,rmpRegNo:rmp.value.trim(),pin:upin.value.trim()}; await window.Models.upsertUser(u); toast('Saved'); renderUsers(); }
+async function renderUsers(){ const list=await window.Models.listUsers(); users.innerHTML=''; list.forEach(u=>{ const d=document.createElement('div'); d.className='row'; d.innerHTML=`<div><strong>${u.name}</strong> • ${u.role} ${u.rmpRegNo?('• RMP '+u.rmpRegNo):''}</div>`; users.appendChild(d); }); }
+async function saveTemplates(){ try{ const obj=JSON.parse(tmpl.value||'{}'); await window.Models.saveTemplates(obj); toast('Templates saved'); }catch(e){ toast('Invalid JSON','error'); } }
+async function exportDb(){ const blob=await window.Models.exportDb(); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='fmc_backup.json'; a.click(); URL.revokeObjectURL(url); }
+async function importDb(){ const f=importFile.files[0]; if(!f){ toast('Pick a file','error'); return;} const text=await f.text(); await window.Models.importDb(JSON.parse(text)); toast('Imported'); location.reload(); }
+</script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+
+</body></html>

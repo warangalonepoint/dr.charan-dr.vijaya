@@ -1,0 +1,1 @@
+window.Calc=(()=>{function eddFromLmp(lmp){if(!lmp)return'';const d=new Date(lmp);if(isNaN(d))return'';d.setDate(d.getDate()+280);return d.toISOString().slice(0,10);}return{eddFromLmp};})();

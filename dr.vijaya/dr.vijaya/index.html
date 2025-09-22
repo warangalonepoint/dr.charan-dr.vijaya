@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Dr. Vijaya’s Fetal Medicine Centre</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#17B26A">
+  <link rel="stylesheet" href="styles/styles.css">
+  <script defer src="scripts/utils.js"></script>
+  <script defer src="scripts/auth.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="assets/logo.png" class="logo" alt="Clinic logo">
+      <div>
+        <h1 class="app-title">Dr. Vijaya’s Fetal Medicine Centre</h1>
+        <div class="subtitle">Obstetric Ultrasound • Fetal Diagnosis & Therapy • Genetic Counseling</div>
+      </div>
+    </div>
+    <button id="themeToggle" class="btn ghost">🌓</button>
+  </header>
+
+  <!-- Hero with fetal illustration -->
+  <section class="hero shell">
+    <div>
+      <div class="pill">Taking Care of Your Health</div>
+      <h2>Health Monitoring & Bookings</h2>
+    </div>
+    <img src="assets/illus/hero-fetal.png" 
+         alt="Fetal medicine hero illustration" 
+         width="140" height="140" />
+  </section>
+
+  <!-- Role-based login as cards -->
+  <main class="login-panel shell">
+    <h3 style="margin-top:0">Login as</h3>
+    <div class="grid four">
+      <div class="tile purple" onclick="loginAs('doctor')">
+        <div class="ico">🩺</div>
+        <div class="tile-title">Doctor</div>
+      </div>
+      <div class="tile yellow" onclick="loginAs('counselor')">
+        <div class="ico">🧬</div>
+        <div class="tile-title">Genetic Counselor</div>
+      </div>
+      <div class="tile pink" onclick="loginAs('frontoffice')">
+        <div class="ico">📋</div>
+        <div class="tile-title">Front Office</div>
+      </div>
+      <div class="tile teal" onclick="loginAs('admin')">
+        <div class="ico">⚙️</div>
+        <div class="tile-title">Admin</div>
+      </div>
+    </div>
+    <p class="muted mt-2">Choose your role to continue</p>
+  </main>
+
+  <footer class="footer">
+    <span>DPDP consent required. “Sex not disclosed” watermark applies.</span>
+    <span class="version">v0.3.0</span>
+  </footer>
+
+  <script>
+    registerSW(); setupThemeToggle();
+
+    function loginAs(role) {
+      try {
+        if (role === 'doctor') {
+          const rmp = prompt("Enter RMP Registration # (optional):");
+          if (rmp) localStorage.setItem('rmpRegNo', rmp.trim());
+        }
+        window.Auth.signInWithRole(role);
+        location.href = 'dashboard.html';
+      } catch (e) {
+        console.error(e);
+        toast('Login failed','error');
+      }
+    }
+  </script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+
+</body>
+</html>

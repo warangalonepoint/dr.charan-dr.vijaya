@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Compliance</title>
+<link rel="stylesheet" href="styles/styles.css">
+<script defer src="scripts/utils.js"></script>
+<script defer src="scripts/db.js"></script>
+<script defer src="scripts/pcpndt.js"></script>
+</head>
+<body><body class="bg-purple">
+
+<header class="topbar">
+  <div class="brand-inline"><img src="assets/logo.png" class="logo-sm"><strong>Compliance</strong></div>
+  <div class="topbar-actions">
+    <span id="roleBadge" class="badge"></span>
+    <button id="themeToggle" class="btn ghost">🌓</button>
+    <a class="btn ghost" href="dashboard.html">Home</a>
+  </div>
+</header>
+<main class="grid cols">
+  <section class="card">
+    <h3>PCPNDT Form-F</h3>
+    <div class="row-inline"><input id="scanId" class="input" placeholder="Scan ID"><button class="btn" onclick="preview()">Preview JSON/PDF</button></div>
+    <pre id="json" class="code mt-2"></pre>
+  </section>
+  <section class="card">
+    <h3>Monthly Export</h3>
+    <div class="row-inline"><input id="month" type="month" class="input"><button class="btn primary" onclick="exportMonth()">Export CSV</button></div>
+    <p class="muted">Generates Form-F CSV for the month; PDFs are accessible from finalized scans.</p>
+  </section>
+  <section class="card">
+    <h3>DPDP & Telemedicine</h3>
+    <ul class="list">
+      <li>DPDP consent gate on first use (utils.js)</li>
+      <li>Telemedicine: store RMP reg no, consent, mode in notes (telemed.js)</li>
+      <li>Audit trail stored per scan (pcpndt.js)</li>
+    </ul>
+  </section>
+</main>
+<footer class="footer"><span>“Sex not disclosed” watermark enforced.</span><span class="version">v0.2.0</span></footer>
+<script>
+guardSessionOrRedirect(); setupThemeToggle(); showRoleBadge();
+async function preview(){ await window.DB.ensureReady(); const id=scanId.value.trim(); const f=await window.PCPNDT.getFormFForScan(id); json.textContent = JSON.stringify(f||{},null,2); if(f) window.PCPNDT.previewFormF(f); }
+async function exportMonth(){ await window.DB.ensureReady(); const m=month.value; const blob=await window.PCPNDT.exportMonthCsv(m); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`formF_${m}.csv`; a.click(); URL.revokeObjectURL(url); }
+</script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+
+</body></html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Dashboard • Dr. Vijaya’s FMC</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <script defer src="scripts/utils.js"></script>
+  <script defer src="scripts/auth.js"></script>
+</head>
+<body>
+<body class="bg-teal">
+  <header class="app-header">
+    <div class="brand">
+      <img src="assets/logo.png" class="logo" alt="Clinic logo">
+      <div>
+        <h1 class="app-title">Dashboard</h1>
+        <div class="subtitle">Welcome back · <span id="roleBadge" class="badge"></span></div>
+      </div>
+    </div>
+    <div class="header-actions">
+      
+      <button id="themeToggle" class="btn ghost">🌓</button>
+      <button id="logoutBtn" class="btn">Logout</button>
+    </div>
+ </header>
+  <!-- Hero with fetal illustration -->
+  <section class="hero shell">
+    <div>
+      <div class="pill">Taking Care of Your Health</div>
+      <h2>Health Monitoring & Bookings</h2>
+    </div>
+    <img src="assets/illus/hero-fetal.png" 
+         alt="Fetal medicine hero illustration" 
+         width="160" height="140" />
+  </section>
+
+  <!-- Tiles -->
+  <main class="tiles shell">
+
+    <!-- Bookings -->
+    <a class="tile purple" href="bookings.html" data-page="bookings">
+      <div class="ico">📅</div>
+      <div class="tile-title">Bookings & Intake</div>
+      <div class="tile-sub">Schedule, reminders, payments</div>
+    </a>
+
+    <!-- Scan -->
+    <a class="tile pink" href="scan.html" data-page="scan">
+      <div class="ico">🫄</div>
+      <div class="tile-title">Ultrasound</div>
+      <div class="tile-sub">Checklist · Biometry · Report</div>
+    </a>
+
+    <!-- Counseling -->
+    <a class="tile yellow" href="counseling.html" data-page="counseling">
+      <div class="ico">🧬</div>
+      <div class="tile-title">Genetic Counseling</div>
+      <div class="tile-sub">Pedigree · Notes · Decisions</div>
+    </a>
+
+    <!-- Procedures -->
+    <a class="tile teal" href="procedures.html" data-page="procedures">
+      <div class="ico">💉</div>
+      <div class="tile-title">Procedures</div>
+      <div class="tile-sub">CVS · Amnio · IUT</div>
+    </a>
+
+    <!-- Compliance -->
+    <a class="tile purple" href="compliance.html" data-page="compliance">
+      <div class="ico">📑</div>
+      <div class="tile-title">Compliance</div>
+      <div class="tile-sub">PCPNDT · Telemed · DPDP</div>
+    </a>
+
+    <!-- Billing (custom) -->
+    <a class="tile yellow" href="billing.html" data-page="billing">
+      <div class="ico">💳</div>
+      <div class="tile-title">Billing</div>
+      <div class="tile-sub">Services & payment modes</div>
+    </a>
+
+    <!-- Admin -->
+    <a class="tile teal" href="admin.html" data-page="admin">
+      <div class="ico">⚙️</div>
+      <div class="tile-title">Admin</div>
+      <div class="tile-sub">Users · Templates · Backups</div>
+    </a>
+
+    <!-- Settings -->
+    <a class="tile pink" href="settings.html" data-page="settings">
+      <div class="ico">🛠️</div>
+      <div class="tile-title">Settings</div>
+      <div class="tile-sub">Seed data · Export/Import</div>
+    </a>
+  </main>
+
+  <footer class="footer">
+    <span>“Sex not disclosed” watermark is enforced on all reports.</span>
+    <span class="version">v0.3.0</span>
+  </footer>
+
+  <script>
+    // Guard + header setup
+    guardSessionOrRedirect(); 
+    setupThemeToggle(); 
+    showRoleBadge();
+
+    // Role → allowed pages map (keep in sync with your page guards)
+    const RULES = {
+      bookings:   ['frontoffice','doctor','admin'],
+      scan:       ['doctor','frontoffice'],
+      counseling: ['counselor','doctor','admin'],
+      procedures: ['doctor','admin'],
+      compliance: ['admin','doctor'],
+      billing:    ['frontoffice','admin'],
+      admin:      ['admin'],
+      settings:   ['admin','doctor']
+    };
+
+    // Hide tiles the current role cannot access
+    const session = window.Auth.current();
+    document.querySelectorAll('a.tile[data-page]').forEach(tile => {
+      const key = tile.getAttribute('data-page');
+      const allowed = RULES[key] || ['doctor','counselor','frontoffice','admin'];
+      if (!allowed.includes(session.role)) {
+        tile.style.display = 'none';
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => window.Auth.signOut());
+
+    // Optional: light global search hook (you can wire to your DB later)
+    document.getElementById('globalSearch').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        toast('Search coming soon: ' + e.target.value);
+      }
+    });
+  </script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+
+</body>
+</html>
+

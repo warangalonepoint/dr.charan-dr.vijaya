@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Billing</title>
+<link rel="stylesheet" href="styles/styles.css">
+<script defer src="scripts/utils.js"></script>
+<script defer src="scripts/db.js"></script>
+<script defer src="scripts/models.js"></script>
+<script defer src="scripts/billing.js"></script>
+</head>
+<body><body class="bg-yellow">
+
+<header class="topbar">
+  <div class="brand-inline"><img src="assets/logo.png" class="logo-sm"><strong>Billing</strong></div>
+  <div class="topbar-actions">
+<input id="search" class="input sm" placeholder="Search name/phone" onkeydown="if(event.key==='Enter')location.search='?q='+encodeURIComponent(this.value)">
+       <span id="roleBadge" class="badge"></span>
+    <button id="themeToggle" class="btn ghost">🌓</button>
+    <a class="btn ghost" href="dashboard.html">Home</a>
+  </div>
+</header>
+
+<main class="grid cols">
+  <section class="card">
+    <h3>Create Bill</h3>
+    <div class="grid two">
+      <label>Patient ID<input id="b_patientId" class="input" placeholder="e.g., 1"></label>
+      <label>Booking ID (optional)<input id="b_bookingId" class="input" placeholder="link to booking"></label>
+      <label>Service Provided<input id="b_service" class="input" placeholder="e.g., Detailed Anomaly Scan"></label>
+      <label>Amount (₹)<input id="b_amount" class="input" inputmode="decimal"></label>
+      <label>Payment Mode
+        <select id="b_mode" class="input">
+          <option>Cash</option><option>UPI</option><option>Card</option><option>Insurance</option><option>Other</option>
+        </select>
+      </label>
+      <label>Reference #<input id="b_ref" class="input" placeholder="txn id / last 4 card"></label>
+      <label>Date<input id="b_date" class="input" type="date"></label>
+      <label>Notes<textarea id="b_notes" class="input" rows="2" placeholder="optional"></textarea></label>
+    </div>
+    <div class="row-inline mt-2">
+      <button class="btn primary" onclick="Billing.save()">Save Bill</button>
+      <button class="btn ghost" onclick="Billing.clearForm()">Clear</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Today’s Bills</h3>
+    <div id="todayTotals" class="muted"></div>
+    <div id="billList" class="list"></div>
+    <div class="row-inline mt-2">
+      <button class="btn" onclick="Billing.exportCsv()">Export CSV</button>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><span>Custom billing: free-form services & charges.</span><span class="version">v0.2.0</span></footer>
+<script>
+  guardSessionOrRedirect(); setupThemeToggle(); showRoleBadge();
+  window.addEventListener('DOMContentLoaded', async ()=>{ await DB.ensureReady(); Billing.init(); });
+</script>
+<footer class="fixed-footer">
+  Powered by Onestop AI Services. All rights reserved.
+</footer>
+</body>
+</html>

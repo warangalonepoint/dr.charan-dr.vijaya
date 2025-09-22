@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/dr\\.charan/?$",
+      "dest": "/dr.charan/index.html"
+    },
+    {
+      "src": "/dr\\.vijaya/?$",
+      "dest": "/dr.vijaya/index.html"
+    }
+  ]
+}
