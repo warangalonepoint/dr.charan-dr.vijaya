@@ -1,1 +1,0 @@
-window.Telemed=(()=>{function launch(){const mode=document.getElementById('teleMode').value; alert(`Tele ${mode} session (placeholder). Consent + RMP identity recorded.`);} return {launch};})();
